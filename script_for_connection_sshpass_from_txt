@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# скрипт на подключение по списку ip адрессов заранее вложенных в txt файлу с дальнейшей проведением конфигурации, root passwd статичны
+
+USR=exampleUSERname		# статичный user
+PASSWD=exampleSTATICpassword		# статичный пароль
+
+IP=/home/yourdirectory/IPlist.txt		#назначаю переменной адресс на каталог с ip адрессами
+COUNTER=0		# создаю счётчик для будущего цикла
+total=$(cat $IP | wc -l)		# подсчитываю колличество строк с ip адрессами в переданному файле
+while [ $COUNTER -lt $total ];do 		# запускаю цикл на колличество ip адрессов
+	let COUNTER+=1		# счётчик прибавляет по одному пока не станет равным колличеству ip адрессов
+	NAME_IP=$(sed -n "$COUNTER"p $IP)		# присваиваю айпи адресс 
+	sshpass -p $PASSWD ssh $USR@$NAME_IP 'mkdir forEXAMPLE;echo "hello;exit"' #как указанно в ковычках по примеру указать необходимые команды 	# подключаюсь по sshpass
+done
